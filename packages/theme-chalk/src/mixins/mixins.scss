@@ -67,7 +67,14 @@
 
 /* BEM
  -------------------------- */
+
+// @mixin 类似于函数，生成函数体内的 css 代码
+// 可传参
+// @content 是外界调用该 mixin 时 {} 中的内容
 @mixin b($block) {
+  // 创建 $B 变量
+  // $namespace 是全局变量，目前是 'el'
+  // !global 用于在 local scope 中（如 mixin）声明一个当前文件中的全局变量
   $B: $namespace+'-'+$block !global;
 
   .#{$B} {
@@ -104,6 +111,9 @@
   $selector: &;
   $currentSelector: "";
   @each $unit in $modifier {
+    // $modifier-separator: '--';
+    // 追加，拼接，生成 $currentSelector
+    // xxx--modifier,
     $currentSelector: #{$currentSelector + & + $modifier-separator + $unit + ","};
   }
 
@@ -162,8 +172,25 @@
   }
 }
 
+// 根据状态设置样式，如 active、disabled、loading
 @mixin when($state) {
+  // @at-root 指令可以将一个或多个样式规则生成在样式文件根层级上，而不是嵌套在其父选择器中
+  //.parent {
+  //  ...
+  //  @at-root {
+  //    .child1 { ... }
+  //    .child2 { ... }
+  //  }
+  //  .step-child { ... }
+  //}
+  // 输出为
+  //.parent { ... }
+  //.child1 { ... }
+  //.child2 { ... }
+  //.parent .step-child { ... }
   @at-root {
+    // $state-prefix 是全局变量，目前是 'is-'
+    // #{} 是字符串表达式，可使用变量
     &.#{$state-prefix + $state} {
       @content;
     }

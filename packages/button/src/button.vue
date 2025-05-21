@@ -17,8 +17,10 @@
       }
     ]"
   >
+    <!-- loading 时会隐藏掉 icon，只显示 loading -->
     <i class="el-icon-loading" v-if="loading"></i>
     <i :class="icon" v-if="icon && !loading"></i>
+    <!-- 为何还要 v-if="$slots.default" 判断？ -->
     <span v-if="$slots.default"><slot></slot></span>
   </button>
 </template>
